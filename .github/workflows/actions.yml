@@ -1,8 +1,8 @@
-name: pywisher
+name: discotweets in actions
 
 on:
   schedule:
-    - cron: "30 18 * * *"
+    - cron: "0 * * * *"
 
 jobs:
   build:
@@ -21,7 +21,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
+
       - name: running multiline script
         run: |
           python src/main.py
