@@ -2,7 +2,7 @@ name: discotweets in actions
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "30 3,12 * * *"
 
 jobs:
   build:
