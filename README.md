@@ -1,3 +1,3 @@
-# pysetup
+# DiscoTweets
 
-A pre-configured repository with vscode settings, and actions file for python project along with isort and black to make things easier for you in terms of import sorting and clean code.
+DiscoTweets is a powerful project that allows you to convert Discord events into messages and automatically tweet them on your Twitter account and on discord channel on schedule. This project utilizes API integration to connect Discord and Twitter, ensuring a smooth and efficient process.
