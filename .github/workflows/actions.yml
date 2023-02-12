@@ -23,13 +23,14 @@ jobs:
           pip install -r requirements.txt
 
       - name: running multiline script
+        env:
+          TOKEN: ${{ secrets.KEY_ID }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          GUILD_ID: ${{ secrets.GUILD_ID }}
+          BEARER_TOKEN: ${{ secrets.BEARER_TOKEN }}
+          API_KEY: ${{ secrets.API_KEY }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
         run: |
           python src/main.py
-
-      - name: commit changes
-        run: |
-          git config --local user.email "${ GITHUB_ACTOR }@users.noreply.github.com"
-          git config --local user.name "${ GITHUB_ACTOR }"
-          git add -A
-          git commit -m "Automated Commit"
-          git push

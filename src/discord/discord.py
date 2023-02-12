@@ -1,9 +1,7 @@
 import json
 import os
-from datetime import timedelta
 
 import requests
-from dateutil import parser
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -27,38 +25,38 @@ class Discord:
         try:
             event_items = []
             guild_id = os.environ.get("GUILD_ID")
-            response = requests.get(self.__url + "guilds/" + guild_id + "/scheduled-events", headers=self.__headers)
+            api_url = self.__url + "guilds/" + guild_id + "/scheduled-events"
+            response = requests.get(api_url, headers=self.__headers)
             if response.ok:
                 events = json.loads(response.text)
                 for event in events:
                     event_name = event.get("name", "")
                     event_schedule = event.get("scheduled_start_time", "")
                     if event_schedule and event_name:
-                        date_time = parser.parse(event_schedule) + timedelta(hours=5.0, minutes=30.0)
-                        date_time = date_time.strftime("%A, %d %b at %I:%M %p")
-                        event_items.append(event_name + " on " + date_time)
+                        event_items.append({"event_name": event_name, "event_schedule": event_schedule})
                     else:
                         raise ValueError("event_name or event_schedule doesn't exists")
-            else:
-                raise ValueError("API call failed")
         except Exception as get_event_err:
             raise get_event_err
         return event_items
 
-    def post_events(self) -> None:
+    def post_events(self, message: str) -> bool:
         """
-        Post the events in the discord server for
-        reminder.
+        Post the events in the discord channel.
+        argument:
+            message: the content to be send on the discord
+                    channel.
+        return:
+            sent: True is message was send successfully.
         """
         try:
+            sent = False
             channel_id = os.environ.get("CHANNEL_ID")
-            pass
+            payload = {"content": message}
+            api_url = self.__url + "channels/" + channel_id + "/messages"
+            response = requests.post(api_url, data=payload, headers=self.__headers)
+            if response.ok:
+                sent = True
         except Exception as post_event_err:
             raise post_event_err
-
-
-Discord = Discord()
-string = ""
-for index, item in enumerate(Discord.get_events()):
-    string = string + f"{index+1}. {item}" + "\n"
-print(string)
+        return sent
